@@ -22,6 +22,7 @@ import java.io.PrintWriter;
 
 public class Limit extends ChargingControlProvider {
     protected final int mChargingLimitMargin;
+    private final ChargeSchedule mSchedule;
 
     public Limit(IChargingControl chargingControl, Context context) {
         super(context, chargingControl);
@@ -34,12 +35,44 @@ public class Limit extends ChargingControlProvider {
             mChargingLimitMargin = 1;
         }
         Log.i(TAG, "isBypassSupported: " + isBypassSupported);
+
+        mSchedule = new ChargeSchedule(context);
     }
 
     @Override
     protected boolean onBatteryChanged(float currentPct, int targetPct) {
         Log.i(TAG, "Current battery level: " + currentPct + ", target: " + targetPct);
         return setChargingLimit(targetPct);
+    }
+
+    /*
+     * The scheduled modes map here when the HAL offers a limit but no toggle.
+     * Hold the battery at the schedule's waiting level instead of disabling
+     * charging, and lift the limit for every other stage.
+     */
+    @Override
+    protected boolean onBatteryChanged(float batteryPct, long startTime, long targetTime,
+            int configMode) {
+        if (configMode != MODE_AUTO && configMode != MODE_MANUAL) {
+            Log.e(TAG,
+                    "Possible bug: onBatteryChanged called with unsupported mode: " + configMode);
+            return false;
+        }
+
+        switch (mSchedule.update(batteryPct, startTime, targetTime)) {
+            case STAGE_NONE -> {
+                setChargingLimit(100);
+                return false;
+            }
+            case STAGE_INITIAL, STAGE_CONTINUE -> {
+                return setChargingLimit(100);
+            }
+            case STAGE_WAITING -> {
+                return setChargingLimit(ChargeSchedule.CHARGE_CTRL_MIN_LEVEL);
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -54,6 +87,7 @@ public class Limit extends ChargingControlProvider {
 
     @Override
     protected void onReset() {
+        mSchedule.reset();
         setChargingLimit(100);
     }
 
@@ -94,5 +128,6 @@ public class Limit extends ChargingControlProvider {
     @Override
     public void dump(PrintWriter pw) {
         pw.println("Provider: " + getClass().getName());
+        mSchedule.dump(pw);
     }
 }
