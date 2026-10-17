@@ -9,15 +9,7 @@ import static lineageos.health.HealthInterface.MODE_AUTO;
 import static lineageos.health.HealthInterface.MODE_LIMIT;
 import static lineageos.health.HealthInterface.MODE_MANUAL;
 
-import static org.lineageos.platform.internal.health.Util.msToHMSString;
-import static org.lineageos.platform.internal.health.Util.msToString;
-
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.BatteryManager;
-import android.os.BatteryStatsManager;
-import android.os.BatteryUsageStats;
 import android.util.Log;
 
 import org.lineageos.platform.internal.R;
@@ -26,43 +18,14 @@ import vendor.lineage.health.ChargingControlSupportedMode;
 import vendor.lineage.health.IChargingControl;
 
 import java.io.PrintWriter;
-import java.util.Objects;
 
 public class Toggle extends ChargingControlProvider {
     protected final int mChargingLimitMargin;
-    private final int mChargingTimeMargin;
 
     private final boolean mToggleSetAlways = mContext.getResources().getBoolean(
             R.bool.config_chargingControlToggleSetAlways);
     private boolean mIsLimitSet;
-    private long mSavedTargetTime;
-    private long mEstimatedFullTime;
-    private chgCtrlStage mStage = chgCtrlStage.STAGE_NONE;
-
-    private enum chgCtrlStage {
-        /**
-         * It has no effect
-         */
-        STAGE_NONE,
-
-        /**
-         * The battery level is less than 80%
-         */
-        STAGE_INITIAL,
-
-        /**
-         * The battery level reached 80% and is now waiting
-         */
-        STAGE_WAITING,
-
-        /**
-         * The battery is now charging towards 100%
-         */
-        STAGE_CONTINUE,
-    }
-
-    // Only when the battery level is above this limit will the charging control be activated.
-    private final static int CHARGE_CTRL_MIN_LEVEL = 80;
+    private final ChargeSchedule mSchedule;
 
     public Toggle(IChargingControl chargingControl,
             Context context) {
@@ -78,8 +41,7 @@ public class Toggle extends ChargingControlProvider {
         }
         Log.i(TAG, "isBypassSupported: " + isBypassSupported);
 
-        mChargingTimeMargin = mContext.getResources().getInteger(
-                R.integer.config_chargingControlTimeMargin) * 60 * 1000;
+        mSchedule = new ChargeSchedule(context);
     }
 
     @Override
@@ -100,7 +62,7 @@ public class Toggle extends ChargingControlProvider {
         return setChargingEnabled(!mIsLimitSet);
     }
 
-    private boolean onStage(chgCtrlStage stage) {
+    private boolean onStage(ChargeSchedule.Stage stage) {
         switch (stage) {
             case STAGE_NONE -> {
                 setChargingEnabled(true);
@@ -117,69 +79,6 @@ public class Toggle extends ChargingControlProvider {
         return false;
     }
 
-    private chgCtrlStage getNextStage(float batteryPct, long startTime, long targetTime) {
-        final long currentTime = System.currentTimeMillis();
-        chgCtrlStage stage = mStage;
-
-        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent batteryStatus = mContext.registerReceiver(null, ifilter, Context.RECEIVER_EXPORTED);
-        boolean plugged = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1) != 0;
-
-        if (startTime > currentTime && stage != chgCtrlStage.STAGE_CONTINUE) {
-            // Not yet entering user configured time frame
-            return chgCtrlStage.STAGE_NONE;
-        }
-
-        if (mSavedTargetTime != targetTime && (mSavedTargetTime == 0
-                || mSavedTargetTime >= currentTime)) {
-            Log.i(TAG, "User changed target time, reassign it");
-            mSavedTargetTime = targetTime;
-            stage = chgCtrlStage.STAGE_INITIAL;
-        }
-
-        final BatteryUsageStats batteryUsageStats = Objects.requireNonNull(
-                mContext.getSystemService(
-                        BatteryStatsManager.class)).getBatteryUsageStats();
-        long remaining = batteryUsageStats.getChargeTimeRemainingMs();
-        remaining += mChargingTimeMargin;
-        Log.i(TAG, "Current estimated time to full: " + msToHMSString(remaining));
-
-        long deltaTime = targetTime - currentTime;
-        Log.i(TAG, "Current time to target: " + msToHMSString(deltaTime));
-
-        switch (stage) {
-            case STAGE_NONE, STAGE_INITIAL -> {
-                if (!plugged || batteryPct < CHARGE_CTRL_MIN_LEVEL || remaining == -1) {
-                    // NONE/INITIAL -> INITIAL: If battery level < 80%
-                    return chgCtrlStage.STAGE_INITIAL;
-                } else if (deltaTime > remaining) {
-                    // NONE/INITIAL -> WAITING: battery level >= 80% && Have enough time waiting
-                    mEstimatedFullTime = remaining;
-                    return chgCtrlStage.STAGE_WAITING;
-                } else {
-                    // NONE/INITIAL -> CONTINUE: battery level >= 80% && Not enough time waiting
-                    return chgCtrlStage.STAGE_CONTINUE;
-                }
-            }
-            case STAGE_WAITING -> {
-                if (deltaTime <= mEstimatedFullTime) {
-                    return chgCtrlStage.STAGE_CONTINUE;
-                } else {
-                    return chgCtrlStage.STAGE_WAITING;
-                }
-            }
-            case STAGE_CONTINUE -> {
-                if (!plugged) {
-                    return chgCtrlStage.STAGE_INITIAL;
-                }
-                return chgCtrlStage.STAGE_CONTINUE;
-            }
-        }
-
-        Log.e(TAG, "Possible bug: code reaches out of switch case");
-        return chgCtrlStage.STAGE_NONE;
-    }
-
     @Override
     protected boolean onBatteryChanged(float batteryPct, long startTime, long targetTime,
             int configMode) {
@@ -189,11 +88,7 @@ public class Toggle extends ChargingControlProvider {
             return false;
         }
 
-        chgCtrlStage prevStage = mStage;
-        mStage = getNextStage(batteryPct, startTime, targetTime);
-        Log.i(TAG, "State change: " + prevStage + " -> " + mStage);
-
-        return onStage(mStage);
+        return onStage(mSchedule.update(batteryPct, startTime, targetTime));
     }
 
     private boolean setChargingEnabled(boolean enabled) {
@@ -225,9 +120,7 @@ public class Toggle extends ChargingControlProvider {
         try {
             mChargingControl.setChargingEnabled(true);
             mIsLimitSet = false;
-            mSavedTargetTime = 0;
-            mEstimatedFullTime = 0;
-            mStage = chgCtrlStage.STAGE_NONE;
+            mSchedule.reset();
         } catch (Exception e) {
             Log.e(TAG, "Failed to set charging enabled", e);
         }
@@ -242,9 +135,7 @@ public class Toggle extends ChargingControlProvider {
     public void dump(PrintWriter pw) {
         pw.println("Provider: " + getClass().getName());
         pw.println("  mIsLimitSet: " + mIsLimitSet);
-        pw.println("  mSavedTargetTime: " + msToString(mContext, mSavedTargetTime));
-        pw.println("  mEstimatedFullTime: " + msToHMSString(mEstimatedFullTime));
-        pw.println("  mStage: " + mStage);
+        mSchedule.dump(pw);
         pw.println("  mChargeLimitMargin: " + mChargingLimitMargin);
     }
 
