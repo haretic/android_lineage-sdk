@@ -1403,8 +1403,9 @@ public final class LineageSettings {
         public static final String CHARGING_CONTROL_LIMIT = "charging_control_charging_limit";
 
         /** @hide */
+        // Down to 50%, for devices kept on a charger.
         public static final Validator CHARGING_CONTROL_LIMIT_VALIDATOR =
-                new InclusiveIntegerRangeValidator(70, 100);
+                new InclusiveIntegerRangeValidator(50, 100);
 
         /**
          * Fast charging mode
