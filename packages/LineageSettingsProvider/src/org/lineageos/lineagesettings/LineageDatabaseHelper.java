@@ -37,7 +37,7 @@ public class LineageDatabaseHelper extends SQLiteOpenHelper{
     private static final boolean LOCAL_LOGV = false;
 
     private static final String DATABASE_NAME = "lineagesettings.db";
-    private static final int DATABASE_VERSION = 24;
+    private static final int DATABASE_VERSION = 25;
 
     public static class LineageTableNames {
         public static final String TABLE_SYSTEM = "system";
@@ -353,6 +353,23 @@ public class LineageDatabaseHelper extends SQLiteOpenHelper{
             upgradeVersion = 24;
         }
 
+        if (upgradeVersion < 25) {
+            // Network traffic indicator defaults, for devices that show it from the start;
+            // a choice already made stays
+            db.beginTransaction();
+            SQLiteStatement stmt = null;
+            try {
+                stmt = db.compileStatement("INSERT OR IGNORE INTO secure(name,value)"
+                        + " VALUES(?,?);");
+                loadNetworkTrafficSettings(stmt);
+                db.setTransactionSuccessful();
+            } finally {
+                if (stmt != null) stmt.close();
+                db.endTransaction();
+            }
+            upgradeVersion = 25;
+        }
+
         // *** Remember to update DATABASE_VERSION above!
         if (upgradeVersion != newVersion) {
             Log.wtf(TAG, "warning: upgrading settings database to version "
@@ -444,9 +461,18 @@ public class LineageDatabaseHelper extends SQLiteOpenHelper{
 
             loadBooleanSetting(stmt, LineageSettings.Secure.QS_SHOW_BRIGHTNESS_SLIDER,
                     R.bool.def_qs_show_brightness_slider);
+
+            loadNetworkTrafficSettings(stmt);
         } finally {
             if (stmt != null) stmt.close();
         }
+    }
+
+    private void loadNetworkTrafficSettings(SQLiteStatement stmt) {
+        loadIntegerSetting(stmt, LineageSettings.Secure.NETWORK_TRAFFIC_MODE,
+                R.integer.def_network_traffic_mode);
+        loadBooleanSetting(stmt, LineageSettings.Secure.NETWORK_TRAFFIC_AUTOHIDE,
+                R.bool.def_network_traffic_autohide);
     }
 
     private void loadSystemSettings(SQLiteDatabase db) {
