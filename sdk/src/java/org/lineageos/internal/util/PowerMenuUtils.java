@@ -21,4 +21,19 @@ public final class PowerMenuUtils {
 
         return advancedRestartEnabled && !keyguardLocked && isPrimaryUser;
     }
+
+    /**
+     * Returns the apps pinned to the power menu, a '|' separated list of package names. Until
+     * the user saves their own choice, that's the device's config_powerMenuDefaultPinnedApps.
+     */
+    public static String getPinnedApps(final Context context, final int userId) {
+        final String pinned = LineageSettings.Secure.getStringForUser(
+                context.getContentResolver(), LineageSettings.Secure.POWER_MENU_PINNED_APPS,
+                userId);
+        if (pinned != null) {
+            return pinned;
+        }
+        return String.join("|", context.getResources().getStringArray(
+                org.lineageos.platform.internal.R.array.config_powerMenuDefaultPinnedApps));
+    }
 }

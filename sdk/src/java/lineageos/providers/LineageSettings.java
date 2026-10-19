@@ -2719,6 +2719,13 @@ public final class LineageSettings {
         public static final String POWER_MENU_ACTIONS = "power_menu_actions";
 
         /**
+         * Apps pinned to the power menu, a '|' separated list of package names. Unset means
+         * the device's default (config_powerMenuDefaultPinnedApps), empty means none.
+         * @hide
+         */
+        public static final String POWER_MENU_PINNED_APPS = "power_menu_pinned_apps";
+
+        /**
          * Whether to show the brightness slider in quick settings panel.
          * @hide
          */
