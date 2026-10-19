@@ -208,4 +208,7 @@
 
     <!-- Advanced rotation settings -->
     <java-symbol type="bool" name="config_enableAdvancedRotationSettings" />
+
+    <!-- Apps pinned to the power menu until the user picks their own -->
+    <java-symbol type="array" name="config_powerMenuDefaultPinnedApps" />
 </resources>
