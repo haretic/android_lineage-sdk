@@ -71,6 +71,18 @@
     -->
     <integer name="def_clock_position">2</integer>
 
+    <!-- Default for LineageSettings.Secure.NETWORK_TRAFFIC_MODE
+         * 0: off
+         * 1: upload only
+         * 2: download only
+         * 3: upload and download
+    -->
+    <integer name="def_network_traffic_mode">0</integer>
+
+    <!-- Default for LineageSettings.Secure.NETWORK_TRAFFIC_AUTOHIDE: hide the indicator while
+         the traffic is below its threshold -->
+    <bool name="def_network_traffic_autohide">false</bool>
+
     <!-- Defaults for AOSP Global -->
 
     <!-- Default for Settings.Global.DISABLE_WINDOW_BLURS -->
