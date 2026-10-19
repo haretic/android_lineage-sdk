@@ -346,4 +346,7 @@
 
     <!-- Advanced rotation settings -->
     <bool name="config_enableAdvancedRotationSettings">true</bool>
+
+    <!-- Apps pinned to the power menu until the user picks their own, package names -->
+    <string-array name="config_powerMenuDefaultPinnedApps" translatable="false" />
 </resources>
