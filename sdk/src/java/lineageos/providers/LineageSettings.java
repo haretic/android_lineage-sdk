@@ -2723,6 +2723,100 @@ public final class LineageSettings {
         public static final String POWER_MENU_PINNED_APPS = "power_menu_pinned_apps";
 
         /**
+         * Whether the UI is worked with a scroll wheel (devices with config_wheelTaskbar): the
+         * wheel taskbar and the focus rings. 0 is the stock look; unset means on.
+         * @hide
+         */
+        public static final String WHEEL_UI = "wheel_ui";
+
+        /**
+         * What the scroll wheel does in each app: comma separated package=mode, the modes being
+         * taskbar, app (the D-pad) and volume. Apps not in it have the device's default
+         * (SystemUI's config_wheelAppModeDefaults), else taskbar.
+         * @hide
+         */
+        public static final String WHEEL_APP_MODES = "wheel_app_modes";
+
+        /**
+         * The wheel taskbar's buttons, top to bottom: comma separated, of home, drawer (all apps),
+         * apps (the pinned and the running apps), notifications and mode (the wheel mode of the
+         * app in front). Its settings button is always last, at the bottom. Unset means all, in
+         * that order.
+         * @hide
+         */
+        public static final String WHEEL_TASKBAR_BUTTONS = "wheel_taskbar_buttons";
+
+        /**
+         * How many running apps the wheel taskbar shows besides the pinned ones; 0 shows none.
+         * Unset means 6.
+         * @hide
+         */
+        public static final String WHEEL_TASKBAR_RUNNING = "wheel_taskbar_running";
+
+        /**
+         * The edge of the wheel taskbar: 0 right, where the wheel is, 1 left.
+         * @hide
+         */
+        public static final String WHEEL_TASKBAR_EDGE = "wheel_taskbar_edge";
+
+        /**
+         * Whether the app slides aside for the wheel taskbar (1, the default) or the bar covers it.
+         * @hide
+         */
+        public static final String WHEEL_TASKBAR_PUSH = "wheel_taskbar_push";
+
+        /**
+         * What the wheel does past the end of a taskbar list: 0 goes round, but up out of a list
+         * goes back to the bar (the default); 1 always goes round; 2 closes the list or the bar.
+         * @hide
+         */
+        public static final String WHEEL_TASKBAR_LIST_END = "wheel_taskbar_list_end";
+
+        /**
+         * Seconds the wheel taskbar stays open untouched, twice that with a list open; 0 keeps it
+         * open. Unset means 3.
+         * @hide
+         */
+        public static final String WHEEL_TASKBAR_TIMEOUT = "wheel_taskbar_timeout";
+
+        /**
+         * Whether the wheel taskbar names the focused button beside it. Unset means on.
+         * @hide
+         */
+        public static final String WHEEL_TASKBAR_LABELS = "wheel_taskbar_labels";
+
+        /**
+         * Whether the wheel ticks as it moves through the taskbar. Unset means on.
+         * @hide
+         */
+        public static final String WHEEL_TASKBAR_HAPTICS = "wheel_taskbar_haptics";
+
+        /**
+         * The wheel taskbar's animations: 2 full (the default), 1 shorter, 0 none.
+         * @hide
+         */
+        public static final String WHEEL_TASKBAR_ANIMATIONS = "wheel_taskbar_animations";
+
+        /**
+         * The wheel taskbar's size: 0 compact, 1 normal (the default), 2 large.
+         * @hide
+         */
+        public static final String WHEEL_TASKBAR_SIZE = "wheel_taskbar_size";
+
+        /**
+         * The wheel taskbar's colour: 0 black (the default), 1 translucent, 2 the system accent.
+         * @hide
+         */
+        public static final String WHEEL_TASKBAR_COLOR = "wheel_taskbar_color";
+
+        /**
+         * The colour of the wheel taskbar's focus ring: 0 the theme's (the default), 1 white,
+         * 2 the system accent.
+         * @hide
+         */
+        public static final String WHEEL_TASKBAR_RING = "wheel_taskbar_ring";
+
+        /**
          * Whether to show the brightness slider in quick settings panel.
          * @hide
          */
