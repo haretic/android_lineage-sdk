@@ -2795,6 +2795,13 @@ public final class LineageSettings {
         public static final String WHEEL_TASKBAR_HAPTICS = "wheel_taskbar_haptics";
 
         /**
+         * Whether the wheel's steps and the side button's presses click quietly in the taskbar,
+         * its lists and the power menu, while touch sounds are on. Unset means on.
+         * @hide
+         */
+        public static final String WHEEL_TASKBAR_SOUNDS = "wheel_taskbar_sounds";
+
+        /**
          * The wheel taskbar's animations: 2 full (the default), 1 shorter, 0 none.
          * @hide
          */
