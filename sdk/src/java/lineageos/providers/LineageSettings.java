@@ -488,7 +488,8 @@ public final class LineageSettings {
     public static final class System extends Settings.NameValueTable {
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/system");
 
-        public static final String SYS_PROP_LINEAGE_SETTING_VERSION = "sys.lineage_settings_system_version";
+        public static final String SYS_PROP_LINEAGE_SETTING_VERSION =
+                "sys.lineage_settings_system_version";
         private static final ContentProviderHolder sProviderHolder =
                 new ContentProviderHolder(CONTENT_URI);
 
@@ -1056,10 +1057,10 @@ public final class LineageSettings {
                         "recent", "menu0", "menu1", "menu2", "dpad_left", "dpad_right"}, "|", true);
 
         /**
-         * boolean value. toggles using arrow key locations on nav bar
-         * as left and right dpad keys
+         * boolean value. toggles using arrow key locations on nav bar as left and right dpad keys
          */
-        public static final String NAVIGATION_BAR_MENU_ARROW_KEYS = "navigation_bar_menu_arrow_keys";
+        public static final String NAVIGATION_BAR_MENU_ARROW_KEYS =
+                "navigation_bar_menu_arrow_keys";
 
         /** @hide */
         public static final Validator NAVIGATION_BAR_MENU_ARROW_KEYS_VALIDATOR =
@@ -1222,10 +1223,11 @@ public final class LineageSettings {
                 sHardwareKeyActionvalidator;
 
         /**
-         * Action to perform when the app switch key is long-pressed. (Default is 0)
-         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
+         * Action to perform when the app switch key is long-pressed. (Default is 0) (See
+         * KEY_HOME_LONG_PRESS_ACTION for valid values)
          */
-        public static final String KEY_APP_SWITCH_LONG_PRESS_ACTION = "key_app_switch_long_press_action";
+        public static final String KEY_APP_SWITCH_LONG_PRESS_ACTION =
+                "key_app_switch_long_press_action";
 
         /** @hide */
         public static final Validator KEY_APP_SWITCH_LONG_PRESS_ACTION_VALIDATOR =
@@ -2289,7 +2291,8 @@ public final class LineageSettings {
     public static final class Secure extends Settings.NameValueTable {
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/secure");
 
-        public static final String SYS_PROP_LINEAGE_SETTING_VERSION = "sys.lineage_settings_secure_version";
+        public static final String SYS_PROP_LINEAGE_SETTING_VERSION =
+                "sys.lineage_settings_secure_version";
 
         private static final ContentProviderHolder sProviderHolder =
                 new ContentProviderHolder(CONTENT_URI);
@@ -2730,6 +2733,15 @@ public final class LineageSettings {
         public static final String WHEEL_UI = "wheel_ui";
 
         /**
+         * Columns in wheel-friendly button lists. 1 (default) or 2. The launcher also offers a
+         * three-column home grid through its existing grid picker. Only used on devices opting into
+         * the list layouts, while WHEEL_UI is enabled.
+         *
+         * @hide
+         */
+        public static final String WHEEL_BUTTON_COLUMNS = "wheel_button_columns";
+
+        /**
          * What the scroll wheel does in each app: comma separated package=mode, the modes being
          * taskbar, app (the D-pad) and volume. Apps not in it have the device's default
          * (SystemUI's config_wheelAppModeDefaults), else taskbar.
@@ -2767,7 +2779,8 @@ public final class LineageSettings {
 
         /**
          * What the wheel does past the end of a taskbar list: 0 goes round, but up out of a list
-         * goes back to the bar (the default); 1 always goes round; 2 closes the list or the bar.
+         * goes back to the bar; 1 always goes round (the default); 2 closes the list or the bar.
+         *
          * @hide
          */
         public static final String WHEEL_TASKBAR_LIST_END = "wheel_taskbar_list_end";
@@ -3119,6 +3132,8 @@ public final class LineageSettings {
         public static final Map<String, Validator> VALIDATORS =
                 new ArrayMap<String, Validator>();
         static {
+            VALIDATORS.put(
+                    WHEEL_BUTTON_COLUMNS, new DiscreteValueValidator(new String[] {"1", "2"}));
             VALIDATORS.put(BERRY_BLACK_THEME, BERRY_BLACK_THEME_VALIDATOR);
             VALIDATORS.put(GESTURE_BACK_EXCLUDE_TOP, GESTURE_BACK_EXCLUDE_TOP_VALIDATOR);
             VALIDATORS.put(NETWORK_TRAFFIC_MODE, NETWORK_TRAFFIC_MODE_VALIDATOR);
@@ -3140,7 +3155,8 @@ public final class LineageSettings {
     public static final class Global extends Settings.NameValueTable {
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/global");
 
-        public static final String SYS_PROP_LINEAGE_SETTING_VERSION = "sys.lineage_settings_global_version";
+        public static final String SYS_PROP_LINEAGE_SETTING_VERSION =
+                "sys.lineage_settings_global_version";
 
         private static final ContentProviderHolder sProviderHolder =
                 new ContentProviderHolder(CONTENT_URI);
