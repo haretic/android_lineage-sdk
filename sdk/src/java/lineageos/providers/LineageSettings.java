@@ -2745,6 +2745,33 @@ public final class LineageSettings {
         public static final String WHEEL_BUTTON_COLUMNS = "wheel_button_columns";
 
         /**
+         * Side-button fallback press action; default Nothing (0).
+         * @hide
+         */
+        public static final String WHEEL_SIDE_BUTTON_PRESS = "wheel_side_button_press";
+
+        /** @hide */
+        public static final String WHEEL_SIDE_BUTTON_HOLD = "wheel_side_button_hold";
+
+        /** @hide */
+        public static final int WHEEL_SIDE_BUTTON_ACTION_NOTHING = 0;
+
+        /** @hide */
+        public static final int WHEEL_SIDE_BUTTON_ACTION_BACK = 1;
+
+        /** @hide */
+        public static final int WHEEL_SIDE_BUTTON_ACTION_HOME = 2;
+
+        /** @hide */
+        public static final int WHEEL_SIDE_BUTTON_ACTION_TASKBAR = 3;
+
+        /** @hide */
+        public static final int WHEEL_SIDE_BUTTON_ACTION_MEDIA = 4;
+
+        /** @hide */
+        public static final int WHEEL_SIDE_BUTTON_ACTION_SCREENSHOT = 5;
+
+        /**
          * What the scroll wheel does in each app: comma separated package=mode, the modes being
          * taskbar, app (the D-pad) and volume. Apps not in it have the device's default
          * (SystemUI's config_wheelAppModeDefaults), else taskbar.
@@ -3135,6 +3162,12 @@ public final class LineageSettings {
         public static final Map<String, Validator> VALIDATORS =
                 new ArrayMap<String, Validator>();
         static {
+            VALIDATORS.put(
+                    WHEEL_SIDE_BUTTON_PRESS,
+                    new DiscreteValueValidator(new String[] {"0", "1", "2", "3", "4", "5"}));
+            VALIDATORS.put(
+                    WHEEL_SIDE_BUTTON_HOLD,
+                    new DiscreteValueValidator(new String[] {"0", "1", "2", "3", "4", "5"}));
             VALIDATORS.put(
                     WHEEL_BUTTON_COLUMNS, new DiscreteValueValidator(new String[] {"1", "2"}));
             VALIDATORS.put(BERRY_BLACK_THEME, BERRY_BLACK_THEME_VALIDATOR);
