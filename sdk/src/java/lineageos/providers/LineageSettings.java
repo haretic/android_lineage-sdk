@@ -2809,14 +2809,14 @@ public final class LineageSettings {
 
         /**
          * What a press of the side button does with the screen on, where the app's wheel mode
-         * leaves it free: one of the WHEEL_SIDE_BUTTON_ACTION values, default Nothing.
+         * leaves it free: one of the WHEEL_SIDE_BUTTON_ACTION values, default Taskbar.
          * @hide
          */
         public static final String WHEEL_SIDE_BUTTON_PRESS = "wheel_side_button_press";
 
         /**
          * What holding the side button does with the screen on: one of the
-         * WHEEL_SIDE_BUTTON_ACTION values, default Nothing. It never opens the power menu.
+         * WHEEL_SIDE_BUTTON_ACTION values, default Back. It never opens the power menu.
          * @hide
          */
         public static final String WHEEL_SIDE_BUTTON_HOLD = "wheel_side_button_hold";
