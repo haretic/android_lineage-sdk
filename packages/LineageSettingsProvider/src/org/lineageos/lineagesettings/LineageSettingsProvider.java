@@ -473,7 +473,7 @@ public class LineageSettingsProvider extends ContentProvider {
 
         // Allow only selection by key; a null/empty selection string will cause all rows in the
         // table to be deleted
-        if (!TextUtils.isEmpty(selection) && selectionArgs.length > 0) {
+        if (!TextUtils.isEmpty(selection) && selectionArgs != null && selectionArgs.length > 0) {
             String tableName = getTableNameFromUri(uri);
             checkWritePermissions(tableName);
 
