@@ -2742,12 +2742,80 @@ public final class LineageSettings {
         public static final String WHEEL_BUTTON_COLUMNS = "wheel_button_columns";
 
         /**
-         * Side-button fallback press action; default Nothing (0).
+         * Whether the shade takes the wheel UI's revised layout: its Notifications and Controls
+         * tabs and list tiles. 1 (default) or 0 for the original; only while WHEEL_UI is enabled.
+         * @hide
+         */
+        public static final String WHEEL_SHADE = "wheel_shade";
+
+        /**
+         * Whether the lock screen takes the wheel UI's revised layout: its Unlock button and the
+         * PIN drum. 1 (default) or 0 for the original; only while WHEEL_UI is enabled.
+         * @hide
+         */
+        public static final String WHEEL_LOCKSCREEN = "wheel_lockscreen";
+
+        /**
+         * Whether system dialogs take the wheel UI's revised layout, their buttons a list one a
+         * row. 1 (default) or 0 for the original; only while WHEEL_UI is enabled.
+         * @hide
+         */
+        public static final String WHEEL_DIALOGS = "wheel_dialogs";
+
+        /**
+         * Whether Settings takes the wheel UI's revised layout: the focus ring, sliders the side
+         * button grabs and the search bar pulled down from the top. 1 (default) or 0 for the
+         * original; only while WHEEL_UI is enabled.
+         * @hide
+         */
+        public static final String WHEEL_SETTINGS = "wheel_settings";
+
+        /**
+         * Whether the home screen takes the wheel UI's revised layout: the apps as a list, with
+         * tabs. 1 (default) or 0 for the original; only while WHEEL_UI is enabled.
+         * @hide
+         */
+        public static final String WHEEL_HOME = "wheel_home";
+
+        /**
+         * How far a step of the wheel scrolls where it scrolls the content as a finger would, in
+         * percent of the device's default: 25 to 400, default 100.
+         * @hide
+         */
+        public static final String WHEEL_SCROLL_DISTANCE = "wheel_scroll_distance";
+
+        /**
+         * How much a fast spin of the wheel speeds scrolling up: 0 not at all, 1 (default) some,
+         * 2 more.
+         * @hide
+         */
+        public static final String WHEEL_SPIN = "wheel_spin";
+
+        /**
+         * How long after the side button is let go the wheel's steps are taken for the press's
+         * nudge and dropped, in milliseconds: 0 to 500, default 150.
+         * @hide
+         */
+        public static final String WHEEL_PRESS_GUARD = "wheel_press_guard";
+
+        /**
+         * Whether the wheel's direction is turned round: 0 (default) or 1.
+         * @hide
+         */
+        public static final String WHEEL_REVERSE = "wheel_reverse";
+
+        /**
+         * What a press of the side button does with the screen on, where the app's wheel mode
+         * leaves it free: one of the WHEEL_SIDE_BUTTON_ACTION values, default Nothing.
          * @hide
          */
         public static final String WHEEL_SIDE_BUTTON_PRESS = "wheel_side_button_press";
 
-        /** @hide */
+        /**
+         * What holding the side button does with the screen on: one of the
+         * WHEEL_SIDE_BUTTON_ACTION values, default Nothing. It never opens the power menu.
+         * @hide
+         */
         public static final String WHEEL_SIDE_BUTTON_HOLD = "wheel_side_button_hold";
 
         /** @hide */
@@ -3167,6 +3235,16 @@ public final class LineageSettings {
                     new DiscreteValueValidator(new String[] {"0", "1", "2", "3", "4", "5"}));
             VALIDATORS.put(
                     WHEEL_BUTTON_COLUMNS, new DiscreteValueValidator(new String[] {"1", "2"}));
+            VALIDATORS.put(WHEEL_SHADE, sBooleanValidator);
+            VALIDATORS.put(WHEEL_LOCKSCREEN, sBooleanValidator);
+            VALIDATORS.put(WHEEL_DIALOGS, sBooleanValidator);
+            VALIDATORS.put(WHEEL_SETTINGS, sBooleanValidator);
+            VALIDATORS.put(WHEEL_HOME, sBooleanValidator);
+            VALIDATORS.put(WHEEL_SCROLL_DISTANCE, new InclusiveIntegerRangeValidator(25, 400));
+            VALIDATORS.put(
+                    WHEEL_SPIN, new DiscreteValueValidator(new String[] {"0", "1", "2"}));
+            VALIDATORS.put(WHEEL_PRESS_GUARD, new InclusiveIntegerRangeValidator(0, 500));
+            VALIDATORS.put(WHEEL_REVERSE, sBooleanValidator);
             VALIDATORS.put(BERRY_BLACK_THEME, BERRY_BLACK_THEME_VALIDATOR);
             VALIDATORS.put(GESTURE_BACK_EXCLUDE_TOP, GESTURE_BACK_EXCLUDE_TOP_VALIDATOR);
             VALIDATORS.put(NETWORK_TRAFFIC_MODE, NETWORK_TRAFFIC_MODE_VALIDATOR);
