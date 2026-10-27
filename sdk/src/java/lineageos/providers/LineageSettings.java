@@ -2759,6 +2759,14 @@ public final class LineageSettings {
         public static final String WHEEL_LOCKSCREEN = "wheel_lockscreen";
 
         /**
+         * How the wheel enters the PIN on the lock screen's revised layout: 1 (default) the
+         * combination dial, each digit as many steps one way, turning back for the next; 0 the
+         * PIN drum, a digit picked a step at a time and pressed. Only while WHEEL_LOCKSCREEN is.
+         * @hide
+         */
+        public static final String WHEEL_UNLOCK = "wheel_unlock";
+
+        /**
          * Whether system dialogs take the wheel UI's revised layout, their buttons a list one a
          * row. 1 (default) or 0 for the original; only while WHEEL_UI is enabled.
          * @hide
@@ -3240,6 +3248,7 @@ public final class LineageSettings {
                     WHEEL_BUTTON_COLUMNS, new DiscreteValueValidator(new String[] {"1", "2"}));
             VALIDATORS.put(WHEEL_SHADE, sBooleanValidator);
             VALIDATORS.put(WHEEL_LOCKSCREEN, sBooleanValidator);
+            VALIDATORS.put(WHEEL_UNLOCK, new DiscreteValueValidator(new String[] {"0", "1"}));
             VALIDATORS.put(WHEEL_DIALOGS, sBooleanValidator);
             VALIDATORS.put(WHEEL_SETTINGS, sBooleanValidator);
             VALIDATORS.put(WHEEL_HOME, sBooleanValidator);
