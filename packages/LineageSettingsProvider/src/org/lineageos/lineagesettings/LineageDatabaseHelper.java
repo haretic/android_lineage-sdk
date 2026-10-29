@@ -37,7 +37,7 @@ public class LineageDatabaseHelper extends SQLiteOpenHelper{
     private static final boolean LOCAL_LOGV = false;
 
     private static final String DATABASE_NAME = "lineagesettings.db";
-    private static final int DATABASE_VERSION = 25;
+    private static final int DATABASE_VERSION = 26;
 
     public static class LineageTableNames {
         public static final String TABLE_SYSTEM = "system";
@@ -370,6 +370,23 @@ public class LineageDatabaseHelper extends SQLiteOpenHelper{
             upgradeVersion = 25;
         }
 
+        if (upgradeVersion < 26) {
+            // The gesture navigation hint's default, for devices that hide it from the start; a
+            // choice already made stays
+            db.beginTransaction();
+            SQLiteStatement stmt = null;
+            try {
+                stmt = db.compileStatement("INSERT OR IGNORE INTO system(name,value)"
+                        + " VALUES(?,?);");
+                loadNavigationBarHintSetting(stmt);
+                db.setTransactionSuccessful();
+            } finally {
+                if (stmt != null) stmt.close();
+                db.endTransaction();
+            }
+            upgradeVersion = 26;
+        }
+
         // *** Remember to update DATABASE_VERSION above!
         if (upgradeVersion != newVersion) {
             Log.wtf(TAG, "warning: upgrading settings database to version "
@@ -475,6 +492,11 @@ public class LineageDatabaseHelper extends SQLiteOpenHelper{
                 R.bool.def_network_traffic_autohide);
     }
 
+    private void loadNavigationBarHintSetting(SQLiteStatement stmt) {
+        loadBooleanSetting(stmt, LineageSettings.System.NAVIGATION_BAR_HINT,
+                R.bool.def_navigation_bar_hint);
+    }
+
     private void loadSystemSettings(SQLiteDatabase db) {
         SQLiteStatement stmt = null;
         try {
@@ -483,6 +505,7 @@ public class LineageDatabaseHelper extends SQLiteOpenHelper{
             // System
             loadIntegerSetting(stmt, LineageSettings.System.FORCE_SHOW_NAVBAR,
                     R.integer.def_force_show_navbar);
+            loadNavigationBarHintSetting(stmt);
 
             loadIntegerSetting(stmt, LineageSettings.System.STATUS_BAR_QUICK_QS_PULLDOWN,
                     R.integer.def_qs_quick_pulldown);
