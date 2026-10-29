@@ -83,6 +83,10 @@
          the traffic is below its threshold -->
     <bool name="def_network_traffic_autohide">false</bool>
 
+    <!-- Default for LineageSettings.System.NAVIGATION_BAR_HINT: the gesture navigation pill
+         shown along the bottom of the screen -->
+    <bool name="def_navigation_bar_hint">true</bool>
+
     <!-- Defaults for AOSP Global -->
 
     <!-- Default for Settings.Global.DISABLE_WINDOW_BLURS -->
