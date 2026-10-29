@@ -2816,6 +2816,14 @@ public final class LineageSettings {
         public static final String WHEEL_REVERSE = "wheel_reverse";
 
         /**
+         * Whether the wheel's direction turns with the screen: 1 (default), a step towards the
+         * screen's top or start being up as the screen is turned upside down or to the right,
+         * or 0, the wheel's way as the device stands upright.
+         * @hide
+         */
+        public static final String WHEEL_TURN_WITH_SCREEN = "wheel_turn_with_screen";
+
+        /**
          * What a press of the side button does with the screen on, where the app's wheel mode
          * leaves it free: one of the WHEEL_SIDE_BUTTON_ACTION values, default Taskbar.
          * @hide
@@ -2872,7 +2880,9 @@ public final class LineageSettings {
         public static final String WHEEL_TASKBAR_RUNNING = "wheel_taskbar_running";
 
         /**
-         * The edge of the wheel taskbar: 0 right, where the wheel is, 1 left.
+         * The edge of the wheel taskbar: 0 (default) beside the wheel, the edge it is on as the
+         * screen turns (right upright, then top, left, bottom), 1 across from it, 2 always the
+         * screen's right, 3 always its left.
          * @hide
          */
         public static final String WHEEL_TASKBAR_EDGE = "wheel_taskbar_edge";
@@ -3257,6 +3267,7 @@ public final class LineageSettings {
                     WHEEL_SPIN, new DiscreteValueValidator(new String[] {"0", "1", "2"}));
             VALIDATORS.put(WHEEL_PRESS_GUARD, new InclusiveIntegerRangeValidator(0, 500));
             VALIDATORS.put(WHEEL_REVERSE, sBooleanValidator);
+            VALIDATORS.put(WHEEL_TURN_WITH_SCREEN, sBooleanValidator);
             VALIDATORS.put(BERRY_BLACK_THEME, BERRY_BLACK_THEME_VALIDATOR);
             VALIDATORS.put(GESTURE_BACK_EXCLUDE_TOP, GESTURE_BACK_EXCLUDE_TOP_VALIDATOR);
             VALIDATORS.put(NETWORK_TRAFFIC_MODE, NETWORK_TRAFFIC_MODE_VALIDATOR);
