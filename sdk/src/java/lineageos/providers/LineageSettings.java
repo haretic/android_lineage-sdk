@@ -2915,6 +2915,33 @@ public final class LineageSettings {
         public static final String WHEEL_TASKBAR_LABELS = "wheel_taskbar_labels";
 
         /**
+         * Whether the wheel taskbar's Power button shows its options in the bar when the
+         * highlight rests on it; its press opens the power menu either way. Unset means on.
+         * @hide
+         */
+        public static final String WHEEL_TASKBAR_POWER_LINGER = "wheel_taskbar_power_linger";
+
+        /**
+         * Whether the wheel UI shows its one-time hints, the first time something new is
+         * possible. Unset means on.
+         * @hide
+         */
+        public static final String WHEEL_GUIDE_HINTS = "wheel_guide_hints";
+
+        /**
+         * The wheel hints already shown, a comma list of their ids; empty shows them again.
+         * @hide
+         */
+        public static final String WHEEL_GUIDE_HINTS_SEEN = "wheel_guide_hints_seen";
+
+        /**
+         * The wheel legend, naming what a turn, a press and a hold do: 0 off, 1 for a moment
+         * when the wheel's mode changes, 2 always. Unset means 1.
+         * @hide
+         */
+        public static final String WHEEL_GUIDE_LEGEND = "wheel_guide_legend";
+
+        /**
          * Whether the wheel ticks as it moves through the taskbar. Unset means on.
          * @hide
          */
