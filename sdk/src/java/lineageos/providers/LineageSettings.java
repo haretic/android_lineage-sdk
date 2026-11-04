@@ -2789,6 +2789,13 @@ public final class LineageSettings {
         public static final String WHEEL_HOME = "wheel_home";
 
         /**
+         * Whether Wallpaper and style takes the wheel UI's revised layout: one list, with both
+         * previews on top. 1 (default) or 0 for the original; only while WHEEL_UI is enabled.
+         * @hide
+         */
+        public static final String WHEEL_STYLES = "wheel_styles";
+
+        /**
          * How far a step of the wheel scrolls where it scrolls the content as a finger would, in
          * percent of the device's default: 25 to 400, default 100.
          * @hide
@@ -2854,6 +2861,9 @@ public final class LineageSettings {
 
         /** @hide */
         public static final int WHEEL_SIDE_BUTTON_ACTION_SCREENSHOT = 5;
+
+        /** @hide */
+        public static final int WHEEL_SIDE_BUTTON_ACTION_QUICK = 6;
 
         /**
          * What the scroll wheel does in each app: comma separated package=mode, the modes being
@@ -3277,10 +3287,10 @@ public final class LineageSettings {
         static {
             VALIDATORS.put(
                     WHEEL_SIDE_BUTTON_PRESS,
-                    new DiscreteValueValidator(new String[] {"0", "1", "2", "3", "4", "5"}));
+                    new DiscreteValueValidator(new String[] {"0", "1", "2", "3", "4", "5", "6"}));
             VALIDATORS.put(
                     WHEEL_SIDE_BUTTON_HOLD,
-                    new DiscreteValueValidator(new String[] {"0", "1", "2", "3", "4", "5"}));
+                    new DiscreteValueValidator(new String[] {"0", "1", "2", "3", "4", "5", "6"}));
             VALIDATORS.put(
                     WHEEL_BUTTON_COLUMNS, new DiscreteValueValidator(new String[] {"1", "2"}));
             VALIDATORS.put(WHEEL_SHADE, sBooleanValidator);
@@ -3289,6 +3299,7 @@ public final class LineageSettings {
             VALIDATORS.put(WHEEL_DIALOGS, sBooleanValidator);
             VALIDATORS.put(WHEEL_SETTINGS, sBooleanValidator);
             VALIDATORS.put(WHEEL_HOME, sBooleanValidator);
+            VALIDATORS.put(WHEEL_STYLES, sBooleanValidator);
             VALIDATORS.put(WHEEL_SCROLL_DISTANCE, new InclusiveIntegerRangeValidator(25, 400));
             VALIDATORS.put(
                     WHEEL_SPIN, new DiscreteValueValidator(new String[] {"0", "1", "2"}));
