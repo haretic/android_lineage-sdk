@@ -79,9 +79,9 @@ public class TrustInterfaceService extends LineageSystemService {
             mNotificationManager = mContext.getSystemService(NotificationManager.class);
 
             // Onboard
+            // haretic: no "Discover Trust" onboarding notification; without onboarding Trust
+            // posts no warnings either
             if (!hasOnboardedUser()) {
-                postOnBoardingNotification();
-                registerLocaleChangedReceiver();
                 return;
             }
 
