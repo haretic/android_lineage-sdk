@@ -2810,6 +2810,13 @@ public final class LineageSettings {
         public static final String WHEEL_SPIN = "wheel_spin";
 
         /**
+         * How the wheel's focus ring moves from stop to stop: 0 jumps, 1 (default) a soft,
+         * weighted pull, 2 snappy with a faint settle, 3 bouncy.
+         * @hide
+         */
+        public static final String WHEEL_MOTION = "wheel_motion";
+
+        /**
          * How long after the side button is let go the wheel's steps are taken for the press's
          * nudge and dropped, in milliseconds: 0 to 500, default 150.
          * @hide
@@ -3303,6 +3310,8 @@ public final class LineageSettings {
             VALIDATORS.put(WHEEL_SCROLL_DISTANCE, new InclusiveIntegerRangeValidator(25, 400));
             VALIDATORS.put(
                     WHEEL_SPIN, new DiscreteValueValidator(new String[] {"0", "1", "2"}));
+            VALIDATORS.put(
+                    WHEEL_MOTION, new DiscreteValueValidator(new String[] {"0", "1", "2", "3"}));
             VALIDATORS.put(WHEEL_PRESS_GUARD, new InclusiveIntegerRangeValidator(0, 500));
             VALIDATORS.put(WHEEL_REVERSE, sBooleanValidator);
             VALIDATORS.put(WHEEL_TURN_WITH_SCREEN, sBooleanValidator);
