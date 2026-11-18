@@ -2872,6 +2872,31 @@ public final class LineageSettings {
         /** @hide */
         public static final int WHEEL_SIDE_BUTTON_ACTION_QUICK = 6;
 
+        /** Turns the screen off, as a power button's press. @hide */
+        public static final int WHEEL_SIDE_BUTTON_ACTION_SLEEP = 7;
+
+        /**
+         * What three presses of the side button do with the screen on: one of the
+         * WHEEL_SIDE_BUTTON_ACTION values, default turning the screen off. With Nothing the
+         * button counts no third press, and the double press acts at once.
+         * @hide
+         */
+        public static final String WHEEL_SIDE_BUTTON_TRIPLE = "wheel_side_button_triple";
+
+        /**
+         * Whether it takes a double press of the side button to wake the screen, 1, where a
+         * press in a pocket would; 0, the default, one press wakes it.
+         * @hide
+         */
+        public static final String WHEEL_SIDE_BUTTON_WAKE_DOUBLE = "wheel_side_button_wake_double";
+
+        /**
+         * Whether the wheel's smooth scrolling drags the page the way the wheel turns, as a
+         * finger on the screen does, 1; 0, the default, a turn down shows what is further down.
+         * @hide
+         */
+        public static final String WHEEL_SCROLL_NATURAL = "wheel_scroll_natural";
+
         /**
          * What the scroll wheel does in each app: comma separated package=mode, the modes being
          * taskbar, app (the D-pad) and volume. Apps not in it have the device's default
@@ -2879,6 +2904,16 @@ public final class LineageSettings {
          * @hide
          */
         public static final String WHEEL_APP_MODES = "wheel_app_modes";
+
+        /**
+         * The wheel's feel where an app has its own: comma separated package=tunings, the
+         * tunings name:value joined by semicolons, of distance (WHEEL_SCROLL_DISTANCE), spin
+         * (WHEEL_SPIN), guard (WHEEL_PRESS_GUARD), reverse (WHEEL_REVERSE), natural
+         * (WHEEL_SCROLL_NATURAL) and divide, the clicks of the wheel that make a step, 1 to 4.
+         * What an app does not name is as the user's general setting.
+         * @hide
+         */
+        public static final String WHEEL_APP_TUNING = "wheel_app_tuning";
 
         /**
          * The wheel taskbar's buttons, top to bottom: comma separated, of home, drawer (all apps),
@@ -3294,10 +3329,12 @@ public final class LineageSettings {
         static {
             VALIDATORS.put(
                     WHEEL_SIDE_BUTTON_PRESS,
-                    new DiscreteValueValidator(new String[] {"0", "1", "2", "3", "4", "5", "6"}));
+                    new DiscreteValueValidator(
+                            new String[] {"0", "1", "2", "3", "4", "5", "6", "7"}));
             VALIDATORS.put(
                     WHEEL_SIDE_BUTTON_HOLD,
-                    new DiscreteValueValidator(new String[] {"0", "1", "2", "3", "4", "5", "6"}));
+                    new DiscreteValueValidator(
+                            new String[] {"0", "1", "2", "3", "4", "5", "6", "7"}));
             VALIDATORS.put(
                     WHEEL_BUTTON_COLUMNS, new DiscreteValueValidator(new String[] {"1", "2"}));
             VALIDATORS.put(WHEEL_SHADE, sBooleanValidator);
@@ -3305,6 +3342,12 @@ public final class LineageSettings {
             VALIDATORS.put(WHEEL_UNLOCK, new DiscreteValueValidator(new String[] {"0", "1"}));
             VALIDATORS.put(WHEEL_DIALOGS, sBooleanValidator);
             VALIDATORS.put(WHEEL_SETTINGS, sBooleanValidator);
+            VALIDATORS.put(
+                    WHEEL_SIDE_BUTTON_TRIPLE,
+                    new DiscreteValueValidator(
+                            new String[] {"0", "1", "2", "3", "4", "5", "6", "7"}));
+            VALIDATORS.put(WHEEL_SIDE_BUTTON_WAKE_DOUBLE, sBooleanValidator);
+            VALIDATORS.put(WHEEL_SCROLL_NATURAL, sBooleanValidator);
             VALIDATORS.put(WHEEL_HOME, sBooleanValidator);
             VALIDATORS.put(WHEEL_STYLES, sBooleanValidator);
             VALIDATORS.put(WHEEL_SCROLL_DISTANCE, new InclusiveIntegerRangeValidator(25, 400));
