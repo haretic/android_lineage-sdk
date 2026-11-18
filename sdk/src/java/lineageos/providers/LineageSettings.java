@@ -2877,8 +2877,8 @@ public final class LineageSettings {
 
         /**
          * What three presses of the side button do with the screen on: one of the
-         * WHEEL_SIDE_BUTTON_ACTION values, default turning the screen off. With Nothing the
-         * button counts no third press, and the double press acts at once.
+         * WHEEL_SIDE_BUTTON_ACTION values, default Nothing: the button then counts no third
+         * press, and the double press acts at once.
          * @hide
          */
         public static final String WHEEL_SIDE_BUTTON_TRIPLE = "wheel_side_button_triple";
